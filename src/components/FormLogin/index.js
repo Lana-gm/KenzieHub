@@ -4,6 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Button, TextField } from "@material-ui/core";
 import * as S from "./styles";
+import axios from "axios";
 
 export const FormLogin = () => {
   const history = useHistory();
@@ -12,7 +13,7 @@ export const FormLogin = () => {
     email: yup.string().email("E-mail inválido").required("Campo obrigatório"),
     password: yup
       .string()
-      .min(8, "Mínimo de 8 dígitos")
+      .min(6, "Mínimo de 6 dígitos")
       .matches(
         /^((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
         "Senha deve conter ao menos uma letra maiúscula, uma minúscula, um número e um caracter especial!"
@@ -27,13 +28,10 @@ export const FormLogin = () => {
   } = useForm({ resolver: yupResolver(schema) });
 
   const handleForm = (data) => {
-    console.log(data);
-    // axios
-    //   .post("https://kenziehub.me/users", data)
-    //   .then((res) => {
-    //     history.push("/login");
-    //   })
-    //   .catch((e) => console.log(e));
+    axios
+      .post("https://kenziehub.me/sessions", data)
+      .then((res) => localStorage.setItem("token", res.data.token));
+    history.push("/user");
   };
 
   return (
