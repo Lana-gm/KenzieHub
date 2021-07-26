@@ -28,10 +28,11 @@ export const FormLogin = () => {
   } = useForm({ resolver: yupResolver(schema) });
 
   const handleForm = (data) => {
-    axios
-      .post("https://kenziehub.me/sessions", data)
-      .then((res) => localStorage.setItem("token", res.data.token));
-    history.push("/user");
+    axios.post("https://kenziehub.me/sessions", data).then((response) => {
+      localStorage.clear();
+      localStorage.setItem("token", response.data.token);
+      history.push("/home");
+    });
   };
 
   return (
