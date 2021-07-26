@@ -37,32 +37,34 @@ export const FormLogin = () => {
 
   return (
     <form onSubmit={handleSubmit(handleForm)}>
-      <S.InputBox>
-        <TextField
-          label="E-mail"
-          variant="outlined"
-          size="small"
-          color="primary"
-          {...register("email")}
-          error={!!errors.email}
-          helperText={errors.email?.message}
-        />
-      </S.InputBox>
-      <S.InputBox>
-        <TextField
-          label="Senha"
-          variant="outlined"
-          size="small"
-          color="primary"
-          type="password"
-          {...register("password")}
-          error={!!errors.password}
-          helperText={errors.password?.message}
-        />
-      </S.InputBox>
-      <Button type="submit" variant="contained" color="primary">
-        Enviar
-      </Button>
+      <S.ContainerBox>
+        <S.InputBox>
+          <TextField
+            label="E-mail"
+            variant="outlined"
+            size="small"
+            color="primary"
+            {...register("email")}
+            error={!!errors.email}
+            helperText={errors.email?.message}
+          />
+        </S.InputBox>
+        <S.InputBox>
+          <TextField
+            label="Senha"
+            variant="outlined"
+            size="small"
+            color="primary"
+            type="password"
+            {...register("password")}
+            error={!!errors.password}
+            helperText={errors.password?.message}
+          />
+        </S.InputBox>
+        <Button type="submit" variant="contained" color="primary">
+          Enviar
+        </Button>
+      </S.ContainerBox>
     </form>
   );
 };

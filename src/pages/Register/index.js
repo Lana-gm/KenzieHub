@@ -1,9 +1,10 @@
 import { FormRegister } from "../../components/FormRegister";
+import * as S from "./styles";
 
 const Register = () => {
   return (
     <>
-      <h3>Faça seu cadastro</h3>
+      <S.Title>Faça seu cadastro</S.Title>
       <FormRegister />
     </>
   );

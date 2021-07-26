@@ -1,9 +1,10 @@
 import { FormLogin } from "../../components/FormLogin";
+import * as S from "./styles";
 
 const Login = () => {
   return (
     <>
-      <h3>Faça seu login</h3>
+      <S.Title>Faça seu login</S.Title>
       <FormLogin />
     </>
   );
