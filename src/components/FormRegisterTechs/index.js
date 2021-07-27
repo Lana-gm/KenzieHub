@@ -32,9 +32,14 @@ const FormRegisterTechs = () => {
       .catch((e) => console.log(e));
   };
 
-  const removeTech = (value) => {
-    const newListTech = techs.filter((_, index) => index !== value);
-    setTechs(newListTech);
+  const removeTech = (id) => {
+    axios
+      .delete(`https://kenziehub.me/users/techs/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .catch((e) => console.log(e));
+    const newTechs = techs.filter((tech) => tech.id !== id);
+    setTechs(newTechs);
   };
 
   return (
@@ -71,14 +76,14 @@ const FormRegisterTechs = () => {
       </form>
 
       <ul>
-        {techs.map(({ status, title }, index) => (
+        {techs.map(({ status, title, id }, index) => (
           <li key={index}>
             <span>Title: {title}</span> <br />
             <span>Status: {status}</span>
             <Button
               variant="contained"
               color="secondary"
-              onClick={() => removeTech(index)}
+              onClick={() => removeTech(id)}
             >
               Excluir
             </Button>
