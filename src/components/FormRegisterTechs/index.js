@@ -1,4 +1,6 @@
 import { Button, TextField, Select, MenuItem } from "@material-ui/core";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import * as S from "./styles";
@@ -8,6 +10,7 @@ const FormRegisterTechs = () => {
   const [techs, setTechs] = useState([]);
 
   const token = window.localStorage.getItem("token");
+
   useEffect(() => {
     axios
       .get("https://kenziehub.me/profile", {
@@ -21,7 +24,15 @@ const FormRegisterTechs = () => {
 
   const handleChange = (e) => setLevel(e.target.value);
 
-  const { register, handleSubmit } = useForm();
+  const schema = yup.object().shape({
+    title: yup.string().required("Campo obrigatório"),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(schema) });
 
   const onSubmit = (data) => {
     axios
@@ -53,6 +64,8 @@ const FormRegisterTechs = () => {
               size="small"
               color="primary"
               {...register("title")}
+              error={!!errors.title}
+              helperText={errors.title?.message}
             />
           </S.InputBox>
           <S.InputBox>
@@ -61,9 +74,7 @@ const FormRegisterTechs = () => {
               {...register("status")}
               onChange={handleChange}
             >
-              <MenuItem selected value="Iniciante">
-                Iniciante
-              </MenuItem>
+              <MenuItem value="Iniciante">Iniciante</MenuItem>
               <MenuItem value="Intermediário">Intermediário</MenuItem>
               <MenuItem value="Avançado">Avançado</MenuItem>
             </Select>
@@ -75,21 +86,22 @@ const FormRegisterTechs = () => {
         </S.ContainerBox>
       </form>
 
-      <ul>
+      <S.ContainerList>
         {techs.map(({ status, title, id }, index) => (
-          <li key={index}>
-            <span>Title: {title}</span> <br />
+          <S.ContainerCard key={index}>
+            <span>Tecnologia: {title}</span>
             <span>Status: {status}</span>
             <Button
+              size="small"
               variant="contained"
               color="secondary"
               onClick={() => removeTech(id)}
             >
               Excluir
             </Button>
-          </li>
+          </S.ContainerCard>
         ))}
-      </ul>
+      </S.ContainerList>
     </>
   );
 };

@@ -5,8 +5,9 @@ import * as yup from "yup";
 import { Button, TextField } from "@material-ui/core";
 import * as S from "./styles";
 import axios from "axios";
+import { Redirect } from "react-router-dom";
 
-export const FormLogin = () => {
+export const FormLogin = ({ authenticated, setAuthenticated }) => {
   const history = useHistory();
 
   const schema = yup.object().shape({
@@ -14,10 +15,6 @@ export const FormLogin = () => {
     password: yup
       .string()
       .min(6, "Mínimo de 6 dígitos")
-      .matches(
-        /^((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
-        "Senha deve conter ao menos uma letra maiúscula, uma minúscula, um número e um caracter especial!"
-      )
       .required("Campo obrigatório"),
   });
 
@@ -31,10 +28,14 @@ export const FormLogin = () => {
     axios.post("https://kenziehub.me/sessions", data).then((response) => {
       localStorage.clear();
       localStorage.setItem("token", response.data.token);
+      setAuthenticated(true);
       history.push("/home");
     });
   };
 
+  if (authenticated) {
+    return <Redirect to="/home" />;
+  }
   return (
     <form onSubmit={handleSubmit(handleForm)}>
       <S.ContainerBox>

@@ -11,3 +11,18 @@ export const ContainerBox = styled.div`
   align-items: center;
   height: 50vh;
 `;
+
+export const ContainerList = styled.ul`
+  display: flex;
+`;
+
+export const ContainerCard = styled.li`
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  margin-right: 20px;
+
+  span {
+    margin: 10px;
+  }
+`;
