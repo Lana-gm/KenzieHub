@@ -26,6 +26,7 @@ const FormRegisterTechs = () => {
 
   const schema = yup.object().shape({
     title: yup.string().required("Campo obrigatório"),
+    status: yup.string().required("Campo obrigatório"),
   });
 
   const {
@@ -73,6 +74,8 @@ const FormRegisterTechs = () => {
               value={level}
               {...register("status")}
               onChange={handleChange}
+              error={!!errors.status}
+              helperText={errors.status?.message}
             >
               <MenuItem value="Iniciante">Iniciante</MenuItem>
               <MenuItem value="Intermediário">Intermediário</MenuItem>
