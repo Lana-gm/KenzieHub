@@ -1,25 +1,13 @@
-import { useEffect, useState } from "react";
-
-import axios from "axios";
+import FormRegisterTechs from "../../components/FormRegisterTechs";
+import CardTechs from "../../components/CardTechs";
 
 const Home = () => {
-  const [user, setUser] = useState({});
-
-  const [token, setToken] = useState(() => {
-    const localToken = localStorage.getItem("token") || "";
-    return localToken;
-  });
-
-  useEffect(() => {
-    axios
-      .get("https://kenziehub.me/profile", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => setUser(response.data))
-      .catch((e) => console.log(e));
-  }, []);
-
-  return <>{user.name}</>;
+  return (
+    <>
+      <FormRegisterTechs />
+      {/* <CardTechs /> */}
+    </>
+  );
 };
 
 export default Home;
