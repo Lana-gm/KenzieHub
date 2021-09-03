@@ -4,9 +4,14 @@ import Register from "../pages/Register";
 import Login from "../pages/Login";
 import Home from "../pages/Home";
 import { useEffect } from "react";
+import Header from "../components/Header";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 const Routes = () => {
   const [authenticated, setAuthenticated] = useState(false);
+
+  console.log("rotas", authenticated);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -17,22 +22,26 @@ const Routes = () => {
   }, [authenticated]);
 
   return (
-    <Switch>
-      <Route exact path="/">
-        <Register authenticated={authenticated} />
-      </Route>
+    <>
+      <Header authenticated={authenticated} />
+      <ToastContainer />
+      <Switch>
+        <Route exact path="/">
+          <Register authenticated={authenticated} />
+        </Route>
 
-      <Route path="/login">
-        <Login
-          authenticated={authenticated}
-          setAuthenticated={setAuthenticated}
-        />
-      </Route>
+        <Route path="/login">
+          <Login
+            authenticated={authenticated}
+            setAuthenticated={setAuthenticated}
+          />
+        </Route>
 
-      <Route path="/home">
-        <Home authenticated={authenticated} />
-      </Route>
-    </Switch>
+        <Route path="/home">
+          <Home authenticated={authenticated} />
+        </Route>
+      </Switch>
+    </>
   );
 };
 

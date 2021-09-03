@@ -5,6 +5,7 @@ import * as yup from "yup";
 import { Button, TextField } from "@material-ui/core";
 import * as S from "./styles";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export const FormRegister = () => {
   const history = useHistory();
@@ -31,86 +32,85 @@ export const FormRegister = () => {
     axios
       .post("https://kenziehub.me/users", data)
       .then((res) => {
+        toast.success("Sucesso ao cadastrar sua conta!");
         history.push("/login");
       })
-      .catch((e) => console.log(e));
+      .catch((e) => toast.error("Falha ao cadastrar, verifique seus dados."));
   };
 
   return (
-    <form onSubmit={handleSubmit(handleForm)}>
-      <S.ContainerBox>
-        <S.InputBox>
+    <S.PageContainer>
+      <S.ContainerImage></S.ContainerImage>
+      <form onSubmit={handleSubmit(handleForm)}>
+        <S.ContainerForm>
+          <h3>Faça seu cadastro</h3>
+
           <TextField
             label="Nome"
             variant="outlined"
             size="small"
             color="primary"
+            margin="normal"
             {...register("name")}
             error={!!errors.name}
-            helperText={errors.name?.message}
+            helpertext={errors.name?.message}
           />
-        </S.InputBox>
-        <S.InputBox>
           <TextField
             label="E-mail"
             variant="outlined"
             size="small"
             color="primary"
+            margin="normal"
             {...register("email")}
             error={!!errors.email}
-            helperText={errors.email?.message}
+            helpertext={errors.email?.message}
           />
-        </S.InputBox>
-        <S.InputBox>
           <TextField
             label="Bio"
             variant="outlined"
             size="small"
             color="primary"
+            margin="normal"
             {...register("bio")}
             error={!!errors.bio}
-            helperText={errors.bio?.message}
+            helpertext={errors.bio?.message}
           />
-        </S.InputBox>
-        <S.InputBox>
           <TextField
             label="Contato"
             variant="outlined"
             size="small"
             color="primary"
+            margin="normal"
             {...register("contact")}
             error={!!errors.contact}
-            helperText={errors.contact?.message}
+            helpertext={errors.contact?.message}
           />
-        </S.InputBox>
-        <S.InputBox>
           <TextField
             label="Senha"
             variant="outlined"
             size="small"
             color="primary"
             type="password"
+            margin="normal"
             {...register("password")}
             error={!!errors.password}
-            helperText={errors.password?.message}
+            helpertext={errors.password?.message}
           />
-        </S.InputBox>
-        <S.InputBox>
           <TextField
             label="Módulo do curso"
             variant="outlined"
             size="small"
             color="primary"
+            margin="normal"
             {...register("course_module")}
             error={!!errors.course_module}
-            helperText={errors.course_module?.message}
+            helpertext={errors.course_module?.message}
           />
-        </S.InputBox>
-
-        <Button type="submit" variant="contained" color="primary">
-          Enviar
-        </Button>
-      </S.ContainerBox>
-    </form>
+          <Button type="submit" variant="contained" color="primary">
+            Enviar
+          </Button>
+        </S.ContainerForm>
+      </form>
+    </S.PageContainer>
   );
 };

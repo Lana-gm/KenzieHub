@@ -1,10 +1,11 @@
-import { Button, TextField, Select, MenuItem } from "@material-ui/core";
+import { Button, TextField, MenuItem } from "@material-ui/core";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import * as S from "./styles";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const FormRegisterTechs = () => {
   const [techs, setTechs] = useState([]);
@@ -18,7 +19,7 @@ const FormRegisterTechs = () => {
       })
       .then((res) => setTechs(res.data.techs))
       .catch((e) => console.log(e));
-  }, []);
+  }, [token]);
 
   const [level, setLevel] = useState("");
 
@@ -41,7 +42,11 @@ const FormRegisterTechs = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setTechs([...techs, res.data]))
-      .catch((e) => console.log(e));
+      .catch((e) =>
+        toast.error(
+          "Erro as cadastrar tecnologia, verifique se a tecnologia já é existente."
+        )
+      );
   };
 
   const removeTech = (id) => {
@@ -49,15 +54,15 @@ const FormRegisterTechs = () => {
       .delete(`https://kenziehub.me/users/techs/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
-      .catch((e) => console.log(e));
+      .catch((e) => toast.error("Falha ao deletar tecnologia"));
     const newTechs = techs.filter((tech) => tech.id !== id);
     setTechs(newTechs);
   };
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <S.ContainerBox>
+      <S.Form onSubmit={handleSubmit(onSubmit)}>
+        <S.ContainerForm>
           <S.InputBox>
             <TextField
               label="Cadastre sua tecnologia"
@@ -66,42 +71,42 @@ const FormRegisterTechs = () => {
               color="primary"
               {...register("title")}
               error={!!errors.title}
-              helperText={errors.title?.message}
+              helpertext={errors.title?.message}
             />
           </S.InputBox>
           <S.InputBox>
-            <Select
+            <label>Selecione seu nível:</label>
+            <S.SelectStyled
               value={level}
               {...register("status")}
               onChange={handleChange}
               error={!!errors.status}
-              helperText={errors.status?.message}
+              helpertext={errors.status?.message}
             >
               <MenuItem value="Iniciante">Iniciante</MenuItem>
               <MenuItem value="Intermediário">Intermediário</MenuItem>
               <MenuItem value="Avançado">Avançado</MenuItem>
-            </Select>
+            </S.SelectStyled>
           </S.InputBox>
 
           <Button type="submit" variant="contained" color="primary">
             Enviar
           </Button>
-        </S.ContainerBox>
-      </form>
+        </S.ContainerForm>
+      </S.Form>
 
       <S.ContainerList>
         {techs.map(({ status, title, id }, index) => (
           <S.ContainerCard key={index}>
             <span>Tecnologia: {title}</span>
             <span>Status: {status}</span>
-            <Button
+            <S.ButtonStyled
               size="small"
               variant="contained"
-              color="secondary"
               onClick={() => removeTech(id)}
             >
               Excluir
-            </Button>
+            </S.ButtonStyled>
           </S.ContainerCard>
         ))}
       </S.ContainerList>

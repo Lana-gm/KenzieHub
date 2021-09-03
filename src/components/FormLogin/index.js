@@ -6,8 +6,12 @@ import { Button, TextField } from "@material-ui/core";
 import * as S from "./styles";
 import axios from "axios";
 import { Redirect } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useState, useEffect } from "react";
 
 export const FormLogin = ({ authenticated, setAuthenticated }) => {
+  console.log("login 1", authenticated);
+
   const history = useHistory();
 
   const schema = yup.object().shape({
@@ -25,47 +29,55 @@ export const FormLogin = ({ authenticated, setAuthenticated }) => {
   } = useForm({ resolver: yupResolver(schema) });
 
   const handleForm = (data) => {
-    axios.post("https://kenziehub.me/sessions", data).then((response) => {
-      localStorage.clear();
-      localStorage.setItem("token", response.data.token);
-      setAuthenticated(true);
-      history.push("/home");
-    });
+    axios
+      .post("https://kenziehub.me/sessions", data)
+      .then((response) => {
+        localStorage.clear();
+        localStorage.setItem("token", response.data.token);
+        toast.success("Sucesso ao logar!");
+        setAuthenticated(true);
+        history.push("/home");
+      })
+      .catch((e) => toast.error("Falha ao logar. Verifique seus dados."));
   };
 
   if (authenticated) {
     return <Redirect to="/home" />;
   }
   return (
-    <form onSubmit={handleSubmit(handleForm)}>
-      <S.ContainerBox>
-        <S.InputBox>
+    <S.PageContainer>
+      <form onSubmit={handleSubmit(handleForm)}>
+        <S.ContainerForm>
+          <h3>Faça seu login</h3>
           <TextField
             label="E-mail"
             variant="outlined"
             size="small"
             color="primary"
+            margin="normal"
             {...register("email")}
             error={!!errors.email}
-            helperText={errors.email?.message}
+            helpertext={errors.email?.message}
           />
-        </S.InputBox>
-        <S.InputBox>
+
           <TextField
             label="Senha"
             variant="outlined"
             size="small"
             color="primary"
             type="password"
+            margin="normal"
             {...register("password")}
             error={!!errors.password}
-            helperText={errors.password?.message}
+            helpertext={errors.password?.message}
           />
-        </S.InputBox>
-        <Button type="submit" variant="contained" color="primary">
-          Enviar
-        </Button>
-      </S.ContainerBox>
-    </form>
+
+          <Button type="submit" variant="contained" color="primary">
+            Enviar
+          </Button>
+        </S.ContainerForm>
+      </form>
+      <S.ContainerImage></S.ContainerImage>
+    </S.PageContainer>
   );
 };
