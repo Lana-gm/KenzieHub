@@ -14,7 +14,7 @@ You will be redirect to the project and can interage with the same.
 
 Thank you!!
 
-## Code Samples
+View Demo: https://kenzie-hub-two-delta.vercel.app/
 
 ## Installation
 
